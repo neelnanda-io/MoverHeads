@@ -3,6 +3,8 @@
 
 # %%
 # Setup
+import os
+os.environ["TRANSFORMERS_CACHE"] = "/workspace/cache/"
 from neel.imports import *
 from neel_plotly import *
 
@@ -667,8 +669,8 @@ line(src_resid_decomp @ model.blocks[layer].attn.OV[head] @ unembed_vec, x=src_l
 
 # %%
 # Explore the attention
-import pysvelte
-pysvelte.AttentionMulti(attention=cache["pattern", layer][0, head][:, :, None], tokens=model.to_str_tokens(tokens))
+# import pysvelte
+# pysvelte.AttentionMulti(attention=cache["pattern", layer][0, head][:, :, None], tokens=model.to_str_tokens(tokens))
 
 line(
     einops.rearrange(cache.stack_activation("pattern")[:, 0, :, -2, :-1], "layer head pos -> (layer head) pos"),
