@@ -126,8 +126,8 @@ nutils.show_df(token_df_no_ind.sort_values("mover_dla", ascending=False).head(10
 nutils.show_df(token_df_no_ind.sort_values("mover_dla", ascending=False).head(100))
 # %%
 
-batch = 585
-p = 129
+batch = 269
+p = 31
 
 tokens = pile_tokens[batch, :p+2]
 logits, cache = model.run_with_cache(tokens)
@@ -138,4 +138,12 @@ line(resid_decomp @ model.W_U[:, tokens[-1]], x=resid_labels, title=f"DLA for fi
 # %%
 scatter(x=head_dla[9, 9, :100].flatten(), y=head_dla[10, 7, :100].flatten(), xaxis="L9H9", yaxis="L9H6", title="Head DLA", opacity=0.3)
 scatter(x=mover_dla[9, 9, :100].flatten(), y=mover_dla[10, 7, :100].flatten(), xaxis="L9H9", yaxis="L9H6", title="Mover Head DLA", opacity=0.3)
+# %%
+predicted_token_sorted = token_df.groupby("predicted_token").count()["tokens"].sort_values(ascending=False)
+print(predicted_token_sorted)
+
+for i in range(50):
+    print(predicted_token_sorted.index[i], predicted_token_sorted.iloc[i], nutils.process_token(predicted_token_sorted.index[i], model))
+# %%
+nutils.show_df(token_df[token_df.predicted_token == 262].sort_values("mover_dla", ascending=False).head(100))
 # %%
